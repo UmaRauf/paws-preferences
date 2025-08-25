@@ -1,13 +1,12 @@
 import "./App.css";
 
-export default function Summary({ likedCats }) {
+function Summary({ likedCats }) {
   return (
-    <div className="summary">
-      <h1>🎉 Your Favourites</h1>
-      <p>You liked <strong>{likedCats.length}</strong> cats!</p>
+    <div>
+      <h2>Session Summary</h2>
       <div className="summary-grid">
-        {likedCats.map((url, i) => (
-          <img key={i} src={url} alt="liked cat" />
+        {likedCats.map((cat, index) => (
+          <img key={index} src={cat.url} alt={`Cat ${index}`} />
         ))}
       </div>
     </div>

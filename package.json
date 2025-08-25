@@ -2,7 +2,7 @@
   "name": "paws-preferences",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://UmaRauf.github.io/paws-preferences",
+  "homepage": "https://umarauf.github.io/paws-preferences/",
   "dependencies": {
     "@tailwindcss/cli": "^4.1.12",
     "@testing-library/dom": "^10.4.1",
