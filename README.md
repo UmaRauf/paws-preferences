@@ -1,7 +1,9 @@
-Dating app but for cats
+Dating app but for cats, Paws Preferences
+using REST API by https://cataas.com/
 
-(No im not kidding)
+Install list:-
+1. REACT
+2. Node.js
+3. Tailwind
 
-Install REACT and type the following into the folder terminal (cmd):-
-
-npm start 
+gh pages active here: https://umarauf.github.io/paws-preferences/
