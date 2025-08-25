@@ -7,6 +7,8 @@ body {
 }
 
 .app {
+  text-align: center;
+  font-family: Arial, sans-serif;
   padding: 20px;
 }
 
@@ -21,31 +23,85 @@ h1 {
   color: #555;
 }
 
+/* Card container */
 .card-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  width: 90%;         /* make it relative to screen */
+  max-width: 150px;   /* cap size on larger screens */
+  height: auto;       /* let height adapt */
+  aspect-ratio: 2/3;  /* keeps a nice portrait ratio */
   position: relative;
-  width: 320px;
-  height: 400px;
-  margin: 20px auto;
 }
 
+/* Card styling */
 .card {
-  position: absolute;
+  position: relative;
+  background: #fff;
   width: 100%;
   height: 100%;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   overflow: hidden;
   transition: transform 0.3s ease;
 }
 
-.card img {
-  width: 100%;
-  height: 100%;
+.card img,
+.cat-img {
+  width: 80%;
+  height: auto;         /* don't stretch full height */
+  max-height: 55%;      /* image won’t take up whole card */
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: 12px;
 }
 
+/* Buttons */
+.buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:nth-child(1) {
+  background: #ff6b6b;
+  color: white;
+}
+
+button:nth-child(2) {
+  background: #4caf50;
+  color: white;
+}
+
+.end-btn {
+  margin-top: 20px;
+  background: #555;
+  color: white;
+}
+
+/* Summary */
 .summary {
   padding: 20px;
 }

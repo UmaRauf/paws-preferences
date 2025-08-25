@@ -1,93 +1,104 @@
-import { useEffect, useState, useRef } from "react";
-import Summary from "./Summary";
+import { useEffect, useState } from "react";
 import "./App.css";
 
-export default function App() {
+function App() {
   const [cats, setCats] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [likedCats, setLikedCats] = useState([]);
-  const [finished, setFinished] = useState(false);
+  const [ended, setEnded] = useState(false);
+  const [likes, setLikes] = useState([]);
+  const [dislikes, setDislikes] = useState([]);
 
-  const cardRef = useRef(null);
-  const startX = useRef(0);
-  const currentX = useRef(0);
-
-  // Load 10 cat images
+  // Fetch 4 cats
   useEffect(() => {
-    const images = Array.from({ length: 10 }, (_, i) =>
-      `https://cataas.com/cat?${Date.now()}-${i}`
-    );
-    setCats(images);
+    const newCats = [];
+    for (let i = 0; i < 4; i++) {
+      newCats.push({
+        name: `Cat ${i + 1}`,
+        img: `https://cataas.com/cat?${Date.now()}-${i}`,
+      });
+    }
+    setCats(newCats);
   }, []);
 
-  const handleStart = (x) => {
-    startX.current = x;
-    currentX.current = x;
-  };
+  const handleChoice = (choice) => {
+    const currentCat = cats[currentIndex];
 
-  const handleMove = (x) => {
-    if (!cardRef.current) return;
-    currentX.current = x;
-    const deltaX = currentX.current - startX.current;
-    cardRef.current.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 20}deg)`;
-  };
-
-  const handleEnd = () => {
-    if (!cardRef.current) return;
-    const deltaX = currentX.current - startX.current;
-
-    if (deltaX > 100) {
-      // Swiped right (like)
-      setLikedCats((prev) => [...prev, cats[currentIndex]]);
-      nextCard();
-    } else if (deltaX < -100) {
-      // Swiped left (dislike)
-      nextCard();
+    if (choice === "like") {
+      setLikes((prev) => [...prev, currentCat]);
     } else {
-      // Snap back to center
-      cardRef.current.style.transform = "translateX(0px) rotate(0deg)";
+      setDislikes((prev) => [...prev, currentCat]);
+    }
+
+    if (currentIndex < cats.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      setEnded(true);
     }
   };
 
-  const nextCard = () => {
-    if (cardRef.current) {
-      cardRef.current.style.transition = "transform 0.3s ease";
-      cardRef.current.style.transform = `translateX(${currentX.current > startX.current ? 500 : -500}px) rotate(${currentX.current > startX.current ? 45 : -45}deg)`;
-      setTimeout(() => {
-        cardRef.current.style.transition = "none";
-        setCurrentIndex((prev) => {
-          if (prev + 1 === cats.length) setFinished(true);
-          return prev + 1;
-        });
-      }, 300);
-    }
-  };
+  const handleEndSession = () => setEnded(true);
 
-  if (finished) {
-    return <Summary likedCats={likedCats} />;
-  }
+  if (cats.length === 0) return <h2>Loading cats...</h2>;
 
   return (
     <div className="app">
-      <h1>🐾 Paws & Preferences</h1>
-      <div className="card-container">
-        {cats.slice(currentIndex, currentIndex + 1).map((url) => (
-          <div
-            key={url}
-            className="card"
-            ref={cardRef}
-            onMouseDown={(e) => handleStart(e.clientX)}
-            onMouseMove={(e) => e.buttons === 1 && handleMove(e.clientX)}
-            onMouseUp={handleEnd}
-            onTouchStart={(e) => handleStart(e.touches[0].clientX)}
-            onTouchMove={(e) => handleMove(e.touches[0].clientX)}
-            onTouchEnd={handleEnd}
-          >
-            <img src={url} alt="cat" />
+      <h1>Cat Preferences</h1>
+
+      {!ended ? (
+        <div>
+          <div className="card">
+            <img
+              src={cats[currentIndex].img}
+              alt={cats[currentIndex].name}
+              className="cat-img"
+            />
+            <h2>{cats[currentIndex].name}</h2>
           </div>
-        ))}
-      </div>
-      <p className="instructions">Swipe right 👍 if you like, left 👎 if not</p>
+
+          <div className="buttons">
+            <button onClick={() => handleChoice("dislike")}>❌ Dislike</button>
+            <button onClick={() => handleChoice("like")}>❤️ Like</button>
+          </div>
+
+          <button className="end-btn" onClick={handleEndSession}>
+            End Session
+          </button>
+        </div>
+      ) : (
+        <div className="summary">
+          <h2>Session Summary</h2>
+
+          <div>
+            <h3>👍 Likes</h3>
+            {likes.length ? (
+              likes.map((cat, idx) => (
+                <div key={idx} className="summary-card">
+                  <img src={cat.img} alt={cat.name} className="cat-thumb" />
+                  <p>{cat.name}</p>
+                </div>
+              ))
+            ) : (
+              <p>None</p>
+            )}
+          </div>
+
+          <div>
+            <h3>👎 Dislikes</h3>
+            {dislikes.length ? (
+              dislikes.map((cat, idx) => (
+                <div key={idx} className="summary-card">
+                  <img src={cat.img} alt={cat.name} className="cat-thumb" />
+                  <p>{cat.name}</p>
+                </div>
+              ))
+            ) : (
+              <p>None</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+export default App;
