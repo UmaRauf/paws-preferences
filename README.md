@@ -7,3 +7,5 @@ Install list:-
 3. Tailwind
 
 gh pages active here: https://umarauf.github.io/paws-preferences/
+
+
