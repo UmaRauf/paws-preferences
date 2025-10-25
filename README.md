@@ -8,4 +8,5 @@ Install list:-
 
 gh pages active here: https://umarauf.github.io/paws-preferences/
 
+to be addressed: slow speed on mobile, identifier on cat pictures + contact info & address for adoptions
 
